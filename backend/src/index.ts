@@ -26,6 +26,7 @@ import onlyofficeRouter  from './modules/onlyoffice/onlyoffice.routes'
 const app = express()
 
 // ─── Security / Middleware ───────────────────────────────────────────────────
+app.set('trust proxy', 1) // Derrière Nginx
 app.use(helmet())
 // CORS : accepter le frontend (URL exacte) + localhost en dev
 const allowedOrigins = [
