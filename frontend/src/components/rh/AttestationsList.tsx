@@ -57,7 +57,7 @@ export function AttestationsList() {
                 : '—'
               return (
                 <tr key={att.id as string} className="hover:bg-surface-200/50 transition-colors">
-                  <td className="px-5 py-3 text-slate-200 font-medium">{label}</td>
+                  <td className="px-5 py-3 text-slate-900 font-medium">{label}</td>
                   <td className="px-5 py-3 text-slate-500">{date}</td>
                   <td className="px-5 py-3">
                     <span className={s.class}>{s.label}</span>

@@ -241,6 +241,7 @@ function AttestationPreview(props: PreviewProps) {
       className={`bg-white border border-slate-300 shadow-lg ${scale} relative`}
       style={{
         fontFamily: '"Times New Roman", Times, serif',
+        color: '#000000',
         padding: fullSize ? '25mm 30mm 25mm 30mm' : '24px 28px',
       }}
     >
@@ -259,7 +260,7 @@ function AttestationPreview(props: PreviewProps) {
       {/* ── Titre ────────────────────────────────────────────────────── */}
       <h1
         className="text-center font-normal"
-        style={{ fontSize: fullSize ? '18pt' : '15pt' }}
+        style={{ fontSize: fullSize ? '18pt' : '15pt', color: '#000000', fontFamily: '"Times New Roman", Times, serif' }}
       >
         ATTESTATION DE TRAVAIL
       </h1>
@@ -332,8 +333,8 @@ function AttestationPreview(props: PreviewProps) {
 
       {/* ── Pied de page ─────────────────────────────────────────────── */}
       <div
-        className="absolute bottom-4 right-6 text-xs text-slate-400"
-        style={{ fontFamily: '"Times New Roman", Times, serif' }}
+        className="absolute bottom-4 right-6 text-xs"
+        style={{ fontFamily: '"Times New Roman", Times, serif', color: '#000000' }}
       >
         Page 1 sur 1
       </div>

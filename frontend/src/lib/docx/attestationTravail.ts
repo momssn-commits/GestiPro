@@ -43,13 +43,14 @@ async function fetchImage(path: string): Promise<ArrayBuffer> {
   return res.arrayBuffer()
 }
 
-/** Crée un TextRun noir standard (Times New Roman 14pt) */
+/** Crée un TextRun noir standard (Times New Roman 14pt, noir automatique) */
 function txt(text: string, opts?: { bold?: boolean; size?: number }): TextRun {
   return new TextRun({
     text,
     font: 'Times New Roman',
     size: (opts?.size ?? 28),       // 28 half-points = 14pt
     bold: opts?.bold,
+    color: '000000',
   })
 }
 
@@ -67,7 +68,7 @@ function redTxt(text: string, opts?: { bold?: boolean }): TextRun {
 /** Paragraphe vide (espacement vertical) */
 function emptyPara(size = 22): Paragraph {
   return new Paragraph({
-    children: [new TextRun({ text: '', font: 'Times New Roman', size })],
+    children: [new TextRun({ text: '', font: 'Times New Roman', size, color: '000000' })],
   })
 }
 
@@ -103,19 +104,21 @@ export async function generateAttestationDocx(data: AttestationData): Promise<vo
       new Paragraph({
         alignment: AlignmentType.RIGHT,
         children: [
-          new TextRun({ text: 'Page ', font: 'Times New Roman', size: 20 }),
+          new TextRun({ text: 'Page ', font: 'Times New Roman', size: 20, color: '000000' }),
           new TextRun({
             children: [PageNumber.CURRENT],
             font: 'Times New Roman',
             size: 20,
             bold: true,
+            color: '000000',
           }),
-          new TextRun({ text: ' sur ', font: 'Times New Roman', size: 20 }),
+          new TextRun({ text: ' sur ', font: 'Times New Roman', size: 20, color: '000000' }),
           new TextRun({
             children: [PageNumber.TOTAL_PAGES],
             font: 'Times New Roman',
             size: 20,
             bold: true,
+            color: '000000',
           }),
         ],
       }),
@@ -138,8 +141,9 @@ export async function generateAttestationDocx(data: AttestationData): Promise<vo
       children: [
         new TextRun({
           text: 'ATTESTATION DE TRAVAIL',
-          font: 'Times',
+          font: 'Times New Roman',
           size: 36,     // 18pt
+          color: '000000',
         }),
       ],
     }),
@@ -236,6 +240,7 @@ export async function generateAttestationDocx(data: AttestationData): Promise<vo
           font: 'Times New Roman',
           size: 24,
           bold: true,
+          color: '000000',
         }),
       ],
     }),
