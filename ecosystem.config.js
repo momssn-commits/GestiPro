@@ -35,8 +35,8 @@ module.exports = {
     {
       name: 'gestipro-frontend',
       cwd: './frontend',
-      script: 'node',
-      args: 'node_modules/.bin/next start -p 3000',
+      script: '../node_modules/.bin/next',
+      args: 'start -p 3000',
       instances: 1,
       exec_mode: 'fork',
       env: {
