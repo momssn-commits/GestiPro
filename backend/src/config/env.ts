@@ -11,8 +11,8 @@ const envSchema = z.object({
   S3_SECRET_KEY: z.string(),
   S3_BUCKET:     z.string().default('gestipro-files'),
   S3_REGION:     z.string().default('us-east-1'),
-  FRONTEND_URL:           z.string().url().default('http://localhost:3000'),
-  APP_PUBLIC_URL:         z.string().url().default('http://localhost:4000'),
+  FRONTEND_URL:           z.string().default('http://localhost:3000'),
+  APP_PUBLIC_URL:         z.string().default('http://localhost:4000'),
   ONLYOFFICE_DOC_SERVER:  z.string().url().default('https://api.onlyoffice.com/'),
   ONLYOFFICE_JWT_SECRET:  z.string().default('onlyoffice-jwt-secret-change-me'),
 })

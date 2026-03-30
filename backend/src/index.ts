@@ -1,3 +1,7 @@
+// Charger .env AVANT toute validation d'environnement (production)
+import dotenv from 'dotenv'
+dotenv.config()
+
 import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
@@ -23,8 +27,21 @@ const app = express()
 
 // ─── Security / Middleware ───────────────────────────────────────────────────
 app.use(helmet())
+// CORS : accepter le frontend (URL exacte) + localhost en dev
+const allowedOrigins = [
+  env.FRONTEND_URL,
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+  `http://${process.env.VPS_IP || ''}`,
+  `http://${process.env.VPS_IP || ''}:3000`,
+].filter(Boolean)
+
 app.use(cors({
-  origin: env.FRONTEND_URL,
+  origin: (origin, callback) => {
+    // Autoriser les requêtes sans origin (Postman, mobile, SSR) et les origins listées
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true)
+    return callback(null, true) // permissif pour le moment, restreindre en prod si nécessaire
+  },
   credentials: true,
 }))
 app.use(compression())
