@@ -38,14 +38,16 @@ git fetch origin
 git reset --hard origin/main
 log "Code mis à jour"
 
-# ── 2. Dépendances backend ────────────────────────────────────────────────────
-log "Installation des dépendances backend…"
-cd "$APP_DIR/backend"
-npm ci --omit=dev 2>&1 | tail -3
+# ── 2. Dépendances (racine workspaces — installe backend + frontend) ──────────
+log "Installation de toutes les dépendances (workspace)…"
+cd "$APP_DIR"
+npm install 2>&1 | tail -3
+log "Dépendances installées"
 
 # ── 3. Compilation TypeScript backend ────────────────────────────────────────
 log "Compilation TypeScript backend…"
-npm run build 2>&1 | tail -5
+cd "$APP_DIR/backend"
+npx tsc 2>&1 | tail -5
 [ -f "dist/index.js" ] || error "dist/index.js introuvable après compilation"
 log "Backend compilé → dist/index.js"
 
@@ -64,13 +66,9 @@ client.connect()
 "
 log "Base de données migrée"
 
-# ── 5. Dépendances frontend ───────────────────────────────────────────────────
-log "Installation des dépendances frontend…"
-cd "$APP_DIR/frontend"
-npm ci 2>&1 | tail -3
-
-# ── 6. Build Next.js ──────────────────────────────────────────────────────────
+# ── 5. Build Next.js ──────────────────────────────────────────────────────────
 log "Build Next.js (peut prendre 1-2 minutes)…"
+cd "$APP_DIR/frontend"
 npm run build 2>&1 | tail -10
 [ -d ".next" ] || error "Build Next.js échoué"
 log "Frontend compilé → .next/"
