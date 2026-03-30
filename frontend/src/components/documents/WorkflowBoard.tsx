@@ -1,28 +1,53 @@
 'use client'
 
 import { clsx } from 'clsx'
-import { CheckCircle, Clock, Upload, Archive } from 'lucide-react'
+import { CheckCircle, Clock, Upload, Archive, Loader2, FileText } from 'lucide-react'
+import { useDocuments } from '@/hooks/useDocuments'
+import { formatDistanceToNow } from 'date-fns'
+import { fr } from 'date-fns/locale'
 
 const STEPS = [
-  { key: 'depot',        label: 'Dépôt',        icon: Upload,       color: 'text-brand',      bg: 'bg-brand/8' },
-  { key: 'verification', label: 'Vérification',  icon: Clock,        color: 'text-accent-yellow',  bg: 'bg-accent-yellow/10' },
-  { key: 'approbation',  label: 'Approbation',   icon: CheckCircle,  color: 'text-accent-green',   bg: 'bg-accent-green/10' },
-  { key: 'archivage',    label: 'Archivage',      icon: Archive,      color: 'text-accent-purple',  bg: 'bg-accent-purple/10' },
+  { key: 'depot',        label: 'Dépôt',       icon: Upload,      color: 'text-brand',           bg: 'bg-brand/8' },
+  { key: 'verification', label: 'Vérification', icon: Clock,       color: 'text-accent-yellow',   bg: 'bg-accent-yellow/10' },
+  { key: 'approbation',  label: 'Approbation',  icon: CheckCircle, color: 'text-accent-green',    bg: 'bg-accent-green/10' },
+  { key: 'archivage',    label: 'Archivage',    icon: Archive,     color: 'text-accent-purple',   bg: 'bg-accent-purple/10' },
 ]
 
-const mockDocs = [
-  { id: '1', name: 'Facture_2024_045.pdf',  step: 'depot',        category: 'facture', updatedAt: '2024-08-01' },
-  { id: '2', name: 'Devis_Batiment_B.pdf',  step: 'verification', category: 'devis',   updatedAt: '2024-08-01' },
-  { id: '3', name: 'APD_Phase2.pdf',        step: 'approbation',  category: 'apd',     updatedAt: '2024-07-30' },
-  { id: '4', name: 'Contrat_Fournisseur.pdf', step: 'archivage',  category: 'contrat', updatedAt: '2024-07-28' },
-  { id: '5', name: 'Devis_IT_2024.pdf',     step: 'depot',        category: 'devis',   updatedAt: '2024-07-31' },
-]
+type Doc = {
+  id: string; name?: string; originalName?: string
+  workflowStep?: string; workflow_step?: string
+  category?: string; updatedAt?: string; updated_at?: string
+}
 
 export function WorkflowBoard() {
+  const { data, isLoading, isError } = useDocuments({ limit: 50 })
+
+  const allDocs: Doc[] = (!isError && data)
+    ? ((data as { data?: Doc[] }).data ?? (Array.isArray(data) ? data as Doc[] : []))
+    : []
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="w-6 h-6 text-brand animate-spin" />
+      </div>
+    )
+  }
+
+  if (isError) {
+    return (
+      <div className="card text-center py-10">
+        <FileText className="w-10 h-10 text-slate-300 mx-auto mb-3" />
+        <p className="text-sm font-medium text-slate-700">Impossible de charger les documents</p>
+        <p className="text-xs text-slate-500 mt-1">Vérifiez votre connexion au serveur.</p>
+      </div>
+    )
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
       {STEPS.map((step, stepIndex) => {
-        const docs = mockDocs.filter(d => d.step === step.key)
+        const docs = allDocs.filter(d => (d.workflowStep ?? d.workflow_step) === step.key)
         return (
           <div key={step.key} className="card space-y-3">
             {/* Step header */}
@@ -44,15 +69,22 @@ export function WorkflowBoard() {
               {docs.length === 0 && (
                 <p className="text-xs text-slate-600 text-center py-4">Aucun document</p>
               )}
-              {docs.map(doc => (
-                <div key={doc.id} className="bg-surface-200 rounded-lg p-3 hover:bg-surface-300 transition-all cursor-pointer">
-                  <p className="text-xs font-medium text-slate-600 truncate">{doc.name}</p>
-                  <div className="flex items-center justify-between mt-1">
-                    <span className="badge-blue capitalize">{doc.category}</span>
-                    <span className="text-xs text-slate-600">{doc.updatedAt}</span>
+              {docs.map(doc => {
+                const name = doc.name ?? doc.originalName ?? 'Document'
+                const updated = doc.updatedAt ?? doc.updated_at
+                const timeLabel = updated
+                  ? formatDistanceToNow(new Date(updated), { addSuffix: true, locale: fr })
+                  : '—'
+                return (
+                  <div key={doc.id} className="bg-surface-200 rounded-lg p-3 hover:bg-surface-300 transition-all cursor-pointer">
+                    <p className="text-xs font-medium text-slate-600 truncate">{name}</p>
+                    <div className="flex items-center justify-between mt-1">
+                      {doc.category && <span className="badge-blue capitalize">{doc.category}</span>}
+                      <span className="text-xs text-slate-600">{timeLabel}</span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         )
