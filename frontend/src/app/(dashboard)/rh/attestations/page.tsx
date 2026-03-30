@@ -1,5 +1,4 @@
 import { AttestationsList } from '@/components/rh/AttestationsList'
-import { GenerateAttestation } from '@/components/rh/GenerateAttestation'
 import { AttestationTravailForm } from '@/components/rh/AttestationTravailForm'
 import { AttestationCongeForm } from '@/components/rh/AttestationCongeForm'
 
@@ -14,7 +13,6 @@ export default function AttestationsPage() {
         <div className="flex gap-3">
           <AttestationCongeForm />
           <AttestationTravailForm />
-          <GenerateAttestation />
         </div>
       </div>
       <AttestationsList />
