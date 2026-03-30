@@ -54,14 +54,14 @@ function txt(text: string, opts?: { bold?: boolean; size?: number }): TextRun {
   })
 }
 
-/** Crée un TextRun rouge gras (champs à remplir) */
+/** Crée un TextRun gras noir (champs variables) */
 function redTxt(text: string, opts?: { bold?: boolean }): TextRun {
   return new TextRun({
     text,
     font: 'Times New Roman',
     size: 28,
     bold: opts?.bold !== false,
-    color: 'FF0000',
+    color: '000000',
   })
 }
 
@@ -194,7 +194,7 @@ export async function generateAttestationDocx(data: AttestationData): Promise<vo
           text: data.dateFait,
           font: 'Times New Roman',
           size: 28,
-          color: 'FF0000',
+          color: '000000',
         }),
         txt('.  '),
       ],

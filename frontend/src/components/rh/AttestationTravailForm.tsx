@@ -92,8 +92,8 @@ export function AttestationTravailForm() {
                   <h3 className="text-sm font-semibold text-slate-700 uppercase tracking-wider">
                     Champs \u00e0 remplir
                   </h3>
-                  <p className="text-xs text-red-500 font-medium mb-2">
-                    * Ces champs apparaissent en rouge dans le document
+                  <p className="text-xs text-slate-500 font-medium mb-2">
+                    * Ces champs apparaîtront en gras dans le document
                   </p>
 
                   {fields.map(field => (
@@ -222,7 +222,7 @@ interface PreviewProps {
 
 function RedField({ value, placeholder }: { value: string; placeholder: string }) {
   return (
-    <span className="font-bold text-red-600">
+    <span className="font-bold" style={{ color: '#000000' }}>
       {value || placeholder}
     </span>
   )
@@ -310,7 +310,7 @@ function AttestationPreview(props: PreviewProps) {
         }}
       >
         Fait \u00e0 {lieuFait || '________'}, le{' '}
-        <span className="text-red-600">{dateFait || '________________'}</span>.
+        <span style={{ color: '#000000' }}>{dateFait || '________________'}</span>.
       </p>
 
       {/* ── Bloc signature ───────────────────────────────────────────── */}
