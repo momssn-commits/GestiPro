@@ -85,8 +85,8 @@ export function DocumentEditorModal({ documentId, documentName, onClose }: Props
           <DocumentEditor
             id={`onlyoffice-editor-${documentId}`}
             documentServerUrl={data.documentServerUrl}
-            config={data.config as Parameters<typeof DocumentEditor>[0]['config']}
-            onLoadComponentError={(code, desc) => {
+            config={data.config as any}
+            onLoadComponentError={(code: number, desc: string) => {
               console.error('[OnlyOffice] Load error', code, desc)
             }}
             height="100%"
