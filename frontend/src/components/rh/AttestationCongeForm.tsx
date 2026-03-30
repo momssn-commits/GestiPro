@@ -263,7 +263,7 @@ interface PreviewProps {
 
 function BoldField({ value, placeholder }: { value: string; placeholder: string }) {
   return (
-    <span className="font-bold" style={{ color: '#000000' }}>
+    <span className="font-bold" style={{ color: '#C00000' }}>
       {value || placeholder}
     </span>
   )
@@ -308,7 +308,7 @@ function CongePreview(props: PreviewProps) {
           fontFamily: '"Times New Roman", Times, serif',
         }}
       >
-        ATTESTATION DE CONGÉs
+        ATTESTATION DE CONGÉS
       </h1>
 
       {/* ── Espacement ───────────────────────────────────────────────── */}
@@ -326,7 +326,7 @@ function CongePreview(props: PreviewProps) {
         <BoldField value={signataire} placeholder="________________" />,{' '}
         <BoldField value={fonctionSignataire} placeholder="________________" />{' '}
         de l&apos;Institut Français du Sénégal, atteste par la présente que{' '}
-        <BoldField value={`${civilite} ${employe}`.trim() || '________________'} placeholder="________________" />,
+        <BoldField value={employe ? `${civilite} ${employe}` : ''} placeholder="________________" />,
         {' '}<BoldField value={poste} placeholder="________________" />,
         {' '}de notre institution, suspendra ses activités du{' '}
         <BoldField value={dateDebut} placeholder="________________" />{' '}
