@@ -3,26 +3,28 @@
 import { FileText, CheckCircle, Clock, GraduationCap } from 'lucide-react'
 import { clsx } from 'clsx'
 import { useDocumentStats } from '@/hooks/useDocuments'
-import { useAttestations } from '@/hooks/useRh'
+import { useAttestations, useValidations } from '@/hooks/useRh'
 import { useMyFormations } from '@/hooks/useFormation'
+import type { PaginatedResponse } from '@/lib/types'
 
 export function DashboardStats() {
-  const { data: docStats }  = useDocumentStats()
-  const { data: attData }   = useAttestations(1, 100)
-  const { data: formations } = useMyFormations()
+  const { data: docStats }    = useDocumentStats()
+  const { data: attData }     = useAttestations(1, 1)
+  const { data: validations } = useValidations({ status: 'pending', limit: 1 })
+  const { data: formations }  = useMyFormations()
 
-  // Calcule les totaux depuis les données API si disponibles
-  const docTotal  = docStats
+  const docTotal = docStats
     ? ((docStats as { byStep?: { count: string }[] }).byStep ?? []).reduce((s, r) => s + Number(r.count), 0)
-    : 12
+    : '—'
 
-  const attTotal  = attData
-    ? Number((attData as { total?: number }).total ?? 8)
-    : 8
+  const attTotal  = attData     ? (attData     as PaginatedResponse<unknown>).total : '—'
+  const valTotal  = validations ? (validations as PaginatedResponse<unknown>).total : '—'
 
   const formCount = formations
-    ? (Array.isArray(formations) ? formations.length : ((formations as {data?: unknown[]}).data ?? []).length)
-    : 3
+    ? (Array.isArray(formations)
+        ? formations.length
+        : ((formations as { data?: unknown[] }).data ?? []).length)
+    : '—'
 
   const stats = [
     {
@@ -35,8 +37,8 @@ export function DashboardStats() {
     },
     {
       label: 'Validations en attente',
-      value: '—',
-      delta: 'Voir la liste',
+      value: String(valTotal),
+      delta: valTotal !== '—' && Number(valTotal) === 0 ? 'Toutes traitées ✓' : 'Voir la liste',
       icon: Clock,
       color: 'text-accent-yellow',
       bg: 'bg-accent-yellow/10',
@@ -52,7 +54,7 @@ export function DashboardStats() {
     {
       label: 'Formations inscrites',
       value: String(formCount),
-      delta: formCount > 0 ? `${formCount} en cours` : 'Aucune',
+      delta: formCount !== '—' && Number(formCount) > 0 ? `${formCount} en cours` : 'Aucune',
       icon: GraduationCap,
       color: 'text-accent-purple',
       bg: 'bg-accent-purple/10',

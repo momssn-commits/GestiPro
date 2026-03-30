@@ -4,12 +4,6 @@ import { CheckCircle, XCircle, Clock, ChevronRight, Loader2 } from 'lucide-react
 import { useState } from 'react'
 import { useValidations, useApproveValidation, useRejectValidation } from '@/hooks/useRh'
 
-const MOCK = [
-  { id: '1', type: 'Attestation de travail', firstName: 'Karim', lastName: 'Benali',  currentStep: 1, totalSteps: 3, status: 'pending',   requestedAt: '01/08/2024' },
-  { id: '2', type: 'Demande de congé',       firstName: 'Sonia', lastName: 'Hadj',    currentStep: 2, totalSteps: 3, status: 'in_review',  requestedAt: '30/07/2024' },
-  { id: '3', type: 'Avancement de grade',    firstName: 'Ahmed', lastName: 'Mouloud', currentStep: 1, totalSteps: 4, status: 'pending',    requestedAt: '28/07/2024' },
-]
-
 export function ValidationQueue() {
   const { data, isLoading, isError } = useValidations()
   const approve = useApproveValidation()
@@ -17,9 +11,9 @@ export function ValidationQueue() {
   const [rejectId, setRejectId] = useState<string | null>(null)
   const [reason, setReason]     = useState('')
 
-  const items = (isError || !data)
-    ? MOCK
-    : ((data as { data?: typeof MOCK }).data ?? MOCK)
+  const items: Record<string, unknown>[] = (!isError && data)
+    ? (((data as unknown) as { data?: Record<string, unknown>[] }).data ?? [])
+    : []
 
   if (isLoading) {
     return (
@@ -41,7 +35,13 @@ export function ValidationQueue() {
 
   return (
     <div className="space-y-4">
-      {isError && <p className="text-xs text-amber-400">Mode local — backend hors ligne</p>}
+      {isError && (
+        <div className="card border-amber-200 bg-amber-50 text-center py-8">
+          <Clock className="w-8 h-8 text-amber-400 mx-auto mb-2" />
+          <p className="text-sm font-medium text-amber-700">Backend hors ligne</p>
+          <p className="text-xs text-amber-500 mt-1">Impossible de récupérer les validations.</p>
+        </div>
+      )}
 
       {/* Modal refus */}
       {rejectId && (
