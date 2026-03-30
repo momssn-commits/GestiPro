@@ -21,7 +21,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>
 
 type Props = {
-  onUserCreated: (user: Omit<AppUser, 'id' | 'active' | 'hireDate'> & { password: string; jobTitle?: string; serviceId?: string }) => void
+  onUserCreated: (user: Omit<AppUser, 'id' | 'active' | 'hireDate' | 'department'> & { password: string; department?: string; jobTitle?: string; serviceId?: string }) => void
 }
 
 export function InviteUser({ onUserCreated }: Props) {
@@ -44,10 +44,10 @@ export function InviteUser({ onUserCreated }: Props) {
       lastName:   data.lastName,
       email:      data.email,
       role:       data.role,
-      department: data.department ?? '',
+      department: data.department || undefined,
       password:   data.password,
-      jobTitle:   data.jobTitle,
-      serviceId:  data.serviceId || undefined,
+      jobTitle:   data.jobTitle   || undefined,
+      serviceId:  data.serviceId  || undefined,
     })
     setOpen(false)
     reset()

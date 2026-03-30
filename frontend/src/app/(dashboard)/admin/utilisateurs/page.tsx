@@ -88,7 +88,7 @@ export default function UsersPage() {
   // ── Créer utilisateur ──────────────────────────────────────────────────────
   const handleUserCreated = async (payload: {
     firstName: string; lastName: string; email: string
-    role: string; department: string; password: string; jobTitle?: string; serviceId?: string
+    role: string; department?: string; password: string; jobTitle?: string; serviceId?: string
   }) => {
     if (backendOk) {
       try {
@@ -115,7 +115,7 @@ export default function UsersPage() {
       lastName:   payload.lastName,
       email:      payload.email,
       role:       payload.role,
-      department: payload.department,
+      department: payload.department ?? '',
       active:     true,
       hireDate:   new Date().toLocaleDateString('fr-FR'),
     }

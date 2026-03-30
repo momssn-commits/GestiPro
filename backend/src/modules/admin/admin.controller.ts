@@ -5,19 +5,23 @@ import { query, queryOne } from '../../config/database'
 import { AppError } from '../../middleware/errorHandler'
 import { v4 as uuidv4 } from 'uuid'
 
+// Convertit une chaîne vide en undefined/null pour les champs optionnels
+const emptyToUndefined = (v: unknown) => (v === '' ? undefined : v)
+const emptyToNull      = (v: unknown) => (v === '' ? null : v)
+
 const userSchema = z.object({
   email:        z.string().email(),
   password:     z.string().min(8).optional(),
   firstName:    z.string().min(2).max(100),
   lastName:     z.string().min(2).max(100),
   role:         z.enum(['admin', 'rh', 'manager', 'employee']),
-  department:   z.string().min(2).max(150).optional(),
-  jobTitle:     z.string().min(2).max(150).optional(),
-  grade:        z.string().max(50).optional(),
-  contractType: z.string().max(50).optional(),
-  phone:        z.string().max(30).optional(),
-  hireDate:     z.string().optional(),
-  serviceId:    z.string().uuid().optional().nullable(),
+  department:   z.preprocess(emptyToUndefined, z.string().min(2).max(150).optional()),
+  jobTitle:     z.preprocess(emptyToUndefined, z.string().min(2).max(150).optional()),
+  grade:        z.preprocess(emptyToUndefined, z.string().max(50).optional()),
+  contractType: z.preprocess(emptyToUndefined, z.string().max(50).optional()),
+  phone:        z.preprocess(emptyToUndefined, z.string().max(30).optional()),
+  hireDate:     z.preprocess(emptyToUndefined, z.string().optional()),
+  serviceId:    z.preprocess(emptyToNull, z.string().uuid().optional().nullable()),
 })
 
 export async function listUsers(req: Request, res: Response, next: NextFunction) {
