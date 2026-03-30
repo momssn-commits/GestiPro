@@ -1,0 +1,18 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "gestipro-backend",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev:local", "--prefix", "backend"],
+      "port": 4000,
+      "autoPort": false
+    },
+    {
+      "name": "gestipro-frontend",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "frontend"],
+      "port": 3000
+    }
+  ]
+}

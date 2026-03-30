@@ -1,0 +1,38 @@
+# Dépendances
+node_modules/
+**/node_modules/
+
+# Environnement (secrets)
+.env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env.local
+
+# Build outputs
+dist/
+build/
+.next/
+**/.next/
+backend/dist/
+
+# Logs
+*.log
+logs/
+**/logs/
+
+# Données locales (dev uniquement)
+backend/.pg-data/
+backend/uploads/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Tests
+coverage/
