@@ -55,7 +55,7 @@ const navItems: NavItem[] = [
     ],
   },
   { label: 'Formation', href: '/formation', icon: GraduationCap, roles: ['admin', 'rh', 'manager'] },
-  { label: 'Services',  href: '/services',  icon: Briefcase },
+  { label: 'Services',  href: '/services',  icon: Briefcase, roles: ['admin'] },
   {
     label: 'Administration',
     icon: ShieldCheck,

@@ -5,7 +5,9 @@ import { useRouter, usePathname } from 'next/navigation'
 import { useAuthStore } from '@/store/auth'
 
 // Routes interdites aux employés
-const EMPLOYEE_BLOCKED = ['/documents', '/formation', '/admin']
+const EMPLOYEE_BLOCKED = ['/documents', '/formation', '/admin', '/services']
+// Routes réservées aux admins uniquement
+const ADMIN_ONLY = ['/admin', '/services']
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
   const { token, user } = useAuthStore()
@@ -18,8 +20,14 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!mounted) return
     if (!token) { router.replace('/login'); return }
+    const role = user?.role
+    // Routes admin uniquement
+    if (role !== 'admin') {
+      const adminOnly = ADMIN_ONLY.some(p => pathname.startsWith(p))
+      if (adminOnly) { router.replace('/dashboard'); return }
+    }
     // Redirige les employés vers leur espace RH si tentative d'accès interdit
-    if (user?.role === 'employee') {
+    if (role === 'employee') {
       const blocked = EMPLOYEE_BLOCKED.some(p => pathname.startsWith(p))
       if (blocked) router.replace('/rh/dossier')
     }
