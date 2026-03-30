@@ -36,7 +36,7 @@ function getDocType(mimeType: string, filename: string): { docType: string; file
 
 /** Signe la config OnlyOffice avec le secret JWT */
 function signConfig(config: object): string {
-  return jwt.sign({ payload: config }, env.ONLYOFFICE_JWT_SECRET, {
+  return jwt.sign(config, env.ONLYOFFICE_JWT_SECRET, {
     algorithm: 'HS256',
     expiresIn: '4h',
   })
