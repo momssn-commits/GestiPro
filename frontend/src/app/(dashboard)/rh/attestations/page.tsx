@@ -1,5 +1,6 @@
 import { AttestationsList } from '@/components/rh/AttestationsList'
 import { GenerateAttestation } from '@/components/rh/GenerateAttestation'
+import { AttestationTravailForm } from '@/components/rh/AttestationTravailForm'
 
 export default function AttestationsPage() {
   return (
@@ -9,7 +10,10 @@ export default function AttestationsPage() {
           <h1 className="text-2xl font-bold text-slate-900">Attestations de travail</h1>
           <p className="text-slate-500 text-sm mt-1">Générez et suivez vos attestations</p>
         </div>
-        <GenerateAttestation />
+        <div className="flex gap-3">
+          <AttestationTravailForm />
+          <GenerateAttestation />
+        </div>
       </div>
       <AttestationsList />
     </div>
