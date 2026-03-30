@@ -263,7 +263,7 @@ interface PreviewProps {
 
 function BoldField({ value, placeholder }: { value: string; placeholder: string }) {
   return (
-    <span className="font-bold" style={{ color: '#C00000' }}>
+    <span className="font-bold" style={{ color: '#000000' }}>
       {value || placeholder}
     </span>
   )
