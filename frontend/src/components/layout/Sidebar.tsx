@@ -13,6 +13,7 @@ import {
   LogOut,
   ShieldCheck,
   Briefcase,
+  FileSignature,
 } from 'lucide-react'
 import { useState } from 'react'
 import { clsx } from 'clsx'
@@ -54,6 +55,7 @@ const navItems: NavItem[] = [
       { label: 'Tableau de bord',   href: '/documents/tableau-de-bord' },
     ],
   },
+  { label: 'Contrats',   href: '/contrats',   icon: FileSignature, roles: ['admin', 'rh', 'manager'] },
   { label: 'Formation', href: '/formation', icon: GraduationCap, roles: ['admin', 'rh', 'manager'] },
   { label: 'Services',  href: '/services',  icon: Briefcase, roles: ['admin'] },
   {
