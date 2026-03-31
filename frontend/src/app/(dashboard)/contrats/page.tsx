@@ -1,5 +1,6 @@
 import { ContratsList } from '@/components/contrats/ContratsList'
 import { ContratUpload } from '@/components/contrats/ContratUpload'
+import { ContratTemplates } from '@/components/contrats/ContratTemplates'
 
 export default function ContratsPage() {
   return (
@@ -11,6 +12,7 @@ export default function ContratsPage() {
         </div>
         <ContratUpload />
       </div>
+      <ContratTemplates />
       <ContratsList />
     </div>
   )
