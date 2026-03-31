@@ -10,7 +10,7 @@ const EMPLOYEE_BLOCKED = ['/documents', '/formation', '/admin', '/services']
 const ADMIN_ONLY = ['/admin', '/services']
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
-  const { token, user } = useAuthStore()
+  const { token, user, _hydrated } = useAuthStore()
   const router   = useRouter()
   const pathname = usePathname()
   const [mounted, setMounted] = useState(false)
@@ -18,7 +18,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
   useEffect(() => { setMounted(true) }, [])
 
   useEffect(() => {
-    if (!mounted) return
+    if (!mounted || !_hydrated) return
     if (!token) { router.replace('/login'); return }
     const role = user?.role
     // Routes admin uniquement
@@ -31,9 +31,9 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
       const blocked = EMPLOYEE_BLOCKED.some(p => pathname.startsWith(p))
       if (blocked) router.replace('/rh/dossier')
     }
-  }, [token, user, mounted, pathname, router])
+  }, [token, user, mounted, _hydrated, pathname, router])
 
-  if (!mounted) {
+  if (!mounted || !_hydrated) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-surface">
         <div className="w-8 h-8 border-2 border-brand border-t-transparent rounded-full animate-spin" />
