@@ -13,7 +13,6 @@ import {
   LogOut,
   ShieldCheck,
   Briefcase,
-  FileSignature,
   ScrollText,
 } from 'lucide-react'
 import { useState } from 'react'
@@ -56,7 +55,6 @@ const navItems: NavItem[] = [
       { label: 'Tableau de bord',   href: '/documents/tableau-de-bord' },
     ],
   },
-  { label: 'Contrats',   href: '/contrats',   icon: FileSignature, roles: ['admin', 'rh', 'manager'] },
   {
     label: 'ContractFlow',
     icon: ScrollText,
