@@ -52,29 +52,10 @@ npx tsc 2>&1 | tail -5
 log "Backend compilé → dist/index.js"
 
 # ── 4. Migration base de données ──────────────────────────────────────────────
-# Les migrations incrémentales sont gérées par runMigrations.ts au démarrage du backend.
-# init.sql est idempotent (IF NOT EXISTS) — on l'applique en ignorant les erreurs
-# sur les objets déjà existants (index, etc.).
-log "Vérification / application des migrations SQL…"
-node -e "
-const { Client } = require('pg')
-require('dotenv').config()
-const client = new Client({ connectionString: process.env.DATABASE_URL })
-const fs = require('fs')
-const sql = fs.readFileSync('src/database/init.sql', 'utf-8')
-client.connect()
-  .then(() => client.query(sql))
-  .then(() => { console.log('Migration OK'); client.end() })
-  .catch(e => {
-    // Ignorer les erreurs \"already exists\" (déploiements successifs)
-    if (e.message && e.message.includes('already exists')) {
-      console.log('Schema déjà à jour (objets existants ignorés)'); client.end()
-    } else {
-      console.error('Migration error:', e.message); client.end(); process.exit(1)
-    }
-  })
-" || true
-log "Base de données vérifiée"
+# Les migrations incrémentales sont gérées automatiquement par runMigrations.ts
+# au démarrage du backend (tables contractflow, etc.).
+# init.sql est appliqué une seule fois à l'installation via setup-server.sh.
+log "Migrations gérées par runMigrations.ts au démarrage du backend — étape ignorée"
 
 # ── 5. Build Next.js ──────────────────────────────────────────────────────────
 log "Build Next.js (peut prendre 1-2 minutes)…"
