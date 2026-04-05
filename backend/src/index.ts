@@ -13,6 +13,7 @@ import path from 'path'
 import { env } from './config/env'
 import { logger } from './config/logger'
 import { errorHandler } from './middleware/errorHandler'
+import { runMigrations } from './database/runMigrations'
 
 import authRouter       from './modules/auth/auth.routes'
 import rhRouter         from './modules/rh/rh.routes'
@@ -21,7 +22,8 @@ import formationRouter  from './modules/formation/formation.routes'
 import adminRouter      from './modules/admin/admin.routes'
 import servicesRouter   from './modules/services/services.routes'
 import foldersRouter      from './modules/folders/folders.routes'
-import onlyofficeRouter  from './modules/onlyoffice/onlyoffice.routes'
+import onlyofficeRouter    from './modules/onlyoffice/onlyoffice.routes'
+import contractflowRouter  from './modules/contractflow/contractflow.routes'
 
 const app = express()
 
@@ -74,14 +76,22 @@ app.use('/api/formation', formationRouter)
 app.use('/api/admin',     adminRouter)
 app.use('/api/services',  servicesRouter)
 app.use('/api/folders',     foldersRouter)
-app.use('/api/onlyoffice', onlyofficeRouter)
+app.use('/api/onlyoffice',    onlyofficeRouter)
+app.use('/api/contractflow', contractflowRouter)
 
 // ─── Error handler ───────────────────────────────────────────────────────────
 app.use(errorHandler)
 
 // ─── Start ────────────────────────────────────────────────────────────────────
-app.listen(env.PORT, () => {
-  logger.info(`GestiPro API running on port ${env.PORT} [${env.NODE_ENV}]`)
-})
+runMigrations()
+  .then(() => {
+    app.listen(env.PORT, () => {
+      logger.info(`GestiPro API running on port ${env.PORT} [${env.NODE_ENV}]`)
+    })
+  })
+  .catch(err => {
+    logger.error('Échec des migrations, démarrage annulé:', err)
+    process.exit(1)
+  })
 
 export default app

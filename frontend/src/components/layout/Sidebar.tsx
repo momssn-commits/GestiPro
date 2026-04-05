@@ -14,6 +14,7 @@ import {
   ShieldCheck,
   Briefcase,
   FileSignature,
+  ScrollText,
 } from 'lucide-react'
 import { useState } from 'react'
 import { clsx } from 'clsx'
@@ -56,6 +57,19 @@ const navItems: NavItem[] = [
     ],
   },
   { label: 'Contrats',   href: '/contrats',   icon: FileSignature, roles: ['admin', 'rh', 'manager'] },
+  {
+    label: 'ContractFlow',
+    icon: ScrollText,
+    roles: ['admin', 'rh', 'manager'],
+    children: [
+      { label: 'Tableau de bord', href: '/contractflow' },
+      { label: 'Déposer un acte', href: '/contractflow/depot' },
+      { label: 'Validation',      href: '/contractflow/validation' },
+      { label: 'Collaboration',   href: '/contractflow/collaboration' },
+      { label: 'Archivage',       href: '/contractflow/archive' },
+      { label: 'Rapports',        href: '/contractflow/rapports' },
+    ],
+  },
   { label: 'Formation', href: '/formation', icon: GraduationCap, roles: ['admin', 'rh', 'manager'] },
   { label: 'Services',  href: '/services',  icon: Briefcase, roles: ['admin'] },
   {

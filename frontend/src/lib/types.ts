@@ -214,6 +214,87 @@ export interface CreateFolderPayload {
 
 export type UpdateFolderPayload = Partial<CreateFolderPayload>
 
+// ─── ContractFlow ────────────────────────────────────────────────────────────
+
+export type ActeStatut = 'brouillon' | 'en_instruction' | 'en_validation' | 'signe' | 'archive' | 'rejete'
+export type ActeType   = 'convention' | 'contrat_prestation' | 'accord_cadre' | 'protocole' | 'avenant'
+
+export interface Acte {
+  id: string
+  numero: string
+  titre: string
+  type: ActeType
+  statut: ActeStatut
+  partieA: string
+  partieB: string
+  objet: string
+  montant?: number | null
+  dateDebut?: string | null
+  dateFin?: string | null
+  service?: string | null
+  observations?: string | null
+  initiateurId: string
+  initiateurFirstName?: string
+  initiateurLastName?: string
+  alerte: boolean
+  createdAt: string
+  updatedAt: string
+}
+
+export interface ActeHistory {
+  id: string
+  acteId: string
+  action: 'depot' | 'approve' | 'reject' | 'complement' | 'archive' | 'update'
+  actorId: string
+  firstName: string
+  lastName: string
+  actorRole: string
+  comment?: string | null
+  fromStatut?: string | null
+  toStatut?: string | null
+  createdAt: string
+}
+
+export interface ActeComment {
+  id: string
+  acteId: string
+  authorId: string
+  firstName: string
+  lastName: string
+  authorRole: string
+  content: string
+  mentions?: string[]
+  createdAt: string
+}
+
+export interface CreateActePayload {
+  titre: string
+  type: ActeType
+  partieB: string
+  objet: string
+  montant?: number | null
+  dateDebut?: string | null
+  dateFin?: string | null
+  service?: string | null
+  observations?: string | null
+}
+
+export type UpdateActePayload = Partial<CreateActePayload>
+
+export interface ActeTransitionPayload {
+  action: 'approve' | 'reject' | 'complement' | 'archive'
+  comment?: string
+}
+
+export interface ActeStats {
+  byStatut:     { statut: string;  count: string }[]
+  byType:       { type: string;    count: string }[]
+  byService:    { service: string; count: string }[]
+  totalMontant: number
+  alerteCount:  number
+  monthly:      { month: string; depot: string; signes: string; rejetes: string }[]
+}
+
 // ─── Pagination ──────────────────────────────────────────────────────────────
 
 export interface PaginatedResponse<T> {
